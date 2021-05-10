@@ -15,30 +15,7 @@ extern "C" {
   void checkMergeSortResult (int* arr, size_t n);
 #ifdef __cplusplus
 }
-#endif
-
-void mergesort(int *arr, int left, int right)
-  {
-    if(left<right)
-      {
-	int middle = (left+right)/2;
-
-	#pragma omp parallel
-	{
-	  #pragma omp single
-	  {
-	    #pragma omp task
-	    mergesort(arr,left,middle);
-
-	    #pragma omp task
-	    mergesort(arr,middle+1,right);
-
-	    #pragma omp taskwait
-	    merge(arr, left, middle+1, right);
-	  }
-	}
-      }
-  }
+#endif      
 
 void merge(int *arr, int left, int middle, int right)
 {
@@ -82,6 +59,30 @@ void merge(int *arr, int left, int middle, int right)
 
   delete[] temp;
 }
+
+void mergesort(int *arr, int left, int right)
+  {
+    if(left<right)
+      {
+	int middle = (left+right)/2;
+
+	#pragma omp parallel
+	{
+	  #pragma omp single
+	  {
+	    #pragma omp task
+	    mergesort(arr,left,middle);
+
+	    #pragma omp task
+	    mergesort(arr,middle+1,right);
+
+	    #pragma omp taskwait
+	    merge(arr, left, middle+1, right);
+	  }
+	}
+      }
+  }
+
 
 int main (int argc, char* argv[])
 {
