@@ -81,8 +81,10 @@ void merge(int *arr, int left, int middle, int right)
     arr[k++]=temp[i++];
 
   delete[] temp;
+}
 
-int main (int argc, char* argv[]) {
+int main (int argc, char* argv[])
+{
   
   if (argc < 3) { std::cerr<<"Usage: "<<argv[0]<<" <n> <nbthreads>"<<std::endl;
     return -1;
@@ -98,7 +100,7 @@ int main (int argc, char* argv[]) {
 
   auto startTime= std::chrono::system_clock::now();
 
-  #pragms omp parallel
+  #pragma omp parallel
   {
     #pragma omp single
     {
